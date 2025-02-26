@@ -9,6 +9,7 @@ import { EditNote } from '@mui/icons-material';
 import axios from 'axios';
 import PopUp from '../../components/PopUp/PopUp';
 import DoctorsForm from './DoctorsForm';
+import { CiUser } from 'react-icons/ci';
 export default function Doctors() {
 
     function handelDelete(row) {
@@ -137,7 +138,9 @@ const {data , isLoading , refetch} = useApi({
         algin : "center",
         headerAlign : "center",
         renderCell: (params) => (
-            <img className='w-12 h-12 rounded-full m-auto' src={ "https://www.test.nia.com.eg/alnasr/storage/app/public/"+ params.row.img} alt="" />
+          params.row.img ?  <img className='w-12 h-12 rounded-full m-auto' src={ "https://www.test.nia.com.eg/alnasr/storage/app/public/"+ params.row.img} alt="" /> : <CiUser className='text-xl m-auto block' />
+
+           
         )
     }
     return {

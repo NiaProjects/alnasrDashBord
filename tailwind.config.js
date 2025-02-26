@@ -14,6 +14,7 @@ export default {
         main : "#F48120"
       }
     },
+    darkMode: 'class',
   },
   plugins: [flowbite()],
 }
