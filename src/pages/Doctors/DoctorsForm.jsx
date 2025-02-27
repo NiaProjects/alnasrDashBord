@@ -5,7 +5,11 @@ import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import { IoCheckmarkSharp, IoCloseSharp } from "react-icons/io5";
 import useApi from "../../hooks/useApi";
+import { showAlert } from "../../utils/showAlert";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 const DoctorsForm = ({ updateForm, refetch }) => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
@@ -67,6 +71,8 @@ const DoctorsForm = ({ updateForm, refetch }) => {
   
 
   async function handleSubmit(values) {
+    console.log("🔴 Form is submitting! Step:", step);
+
     console.log(values);
     // if (!values.img) {
     //   values.img = updateForm?.img 
@@ -76,23 +82,30 @@ const DoctorsForm = ({ updateForm, refetch }) => {
     // }
     // setLoading(true);
     const formData = new FormData();
-    console.log(formData);
 
     for (const key in values) {
-        if (key === "certificate" || key === "exp") {
+      if (key === "certificate" || key === "exp") {
+        if (Array.isArray(values[key])) {
           values[key].forEach((item, index) => {
             formData.append(`${key}[${index}][name_en]`, item.name_en);
             formData.append(`${key}[${index}][name_ar]`, item.name_ar);
             formData.append(`${key}[${index}][date]`, item.date);
           });
-        } 
-        if(key === "active" || key === "show") {
-          formData.append(key, values[key]);
-        }else if(values[key]) {
+        } else {
+          console.error(`❌ ${key} is not an array`, values[key]);
+        }
+      } else if (key === "active" ) {
+        formData.append(key, values[key]);
+      }
+        else if (key === "show"){
+          
           formData.append(key, values[key]);
         }
-      
+       else if (values[key] !== null && values[key] !== undefined) {
+        formData.append(key, values[key]);
+      }
     }
+    
     formData.forEach((value, key) => {
       console.log(key, value);
     });
@@ -101,8 +114,15 @@ const DoctorsForm = ({ updateForm, refetch }) => {
     const {data} =  await axios.post("https://www.test.nia.com.eg/alnasr/public/api/docs", formData);
     console.log(formData);
     console.log(data);
-    // formik.resetForm();
+    formik.resetForm();
     setLoading(false);
+
+    MySwal.fire({
+      title: "Done!",
+      text: "Doctor added successfully",
+      icon: "success",
+       confirmButtonColor:"#F48120"
+    });
     refetch();
   }
   async function handelUpdate(values) {
@@ -145,6 +165,12 @@ const DoctorsForm = ({ updateForm, refetch }) => {
     console.log(data);
     // formik.resetForm();
     setLoading(false);
+    MySwal.fire({
+      title: "Done!",
+      text: "Doctor updated successfully",
+      icon: "success",
+      confirmButtonColor:"#F48120"
+    });
     refetch();
   }
 
@@ -193,7 +219,7 @@ const DoctorsForm = ({ updateForm, refetch }) => {
         </button>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
+      <form onSubmit={(e)=> e.preventDefault()} className="space-y-4">
         {step === 1 && (
           <>
             <label className="block text-sm font-medium text-gray-700">Doctor Name (English)</label>
@@ -315,6 +341,12 @@ const DoctorsForm = ({ updateForm, refetch }) => {
  {step === 3 && (
           <>
        <div className="flex items-center gap-4 mt-4">
+       <label className="block text-sm font-medium text-gray-700">Days(English)</label>
+            <input type="text" {...formik.getFieldProps("day_en")} className="w-full p-2 border rounded" />
+            <label className="block text-sm font-medium text-gray-700">Days(Arabic)</label>
+            <input type="text" {...formik.getFieldProps("day_ar")} className="w-full p-2 border rounded" />
+       </div>
+       <div className="flex items-center gap-4 mt-4">
        <label className="block text-sm font-medium text-gray-700">Time From</label>
             <input type="time" {...formik.getFieldProps("time_from")} className="w-full p-2 border rounded" />
             <label className="block text-sm font-medium text-gray-700">Time To</label>
@@ -370,11 +402,13 @@ const DoctorsForm = ({ updateForm, refetch }) => {
 
         <div className="flex justify-between mt-4">
           {step > 1 && <button type="button" onClick={() => setStep(step - 1)} className="bg-gray-500 text-white px-4 py-2 rounded">Previous</button>}
-          {step < 4 ? (
-            <button type="button" onClick={() => setStep(step + 1)} className="bg-[#F48120] text-white px-4 py-2 rounded">Next</button>
-          ) : (
-            <button type="submit"  className="bg-green-500 text-white px-4 py-2 rounded">{loading ? "Loading..." : "Save Doctor"}</button>
-          )}
+          {step === 4 ? <button type="submit" onClick={formik.handleSubmit}   className="bg-green-500 text-white px-4 py-2 rounded">{loading ? "Loading..." : "Save Doctor"}</button> :
+
+            <button type="button" onClick={() =>{ setStep(step + 1)}} className="bg-[#F48120] text-white px-4 py-2 rounded">Next</button>
+           
+            
+          }
+          
         </div>
       </form>
     </div>

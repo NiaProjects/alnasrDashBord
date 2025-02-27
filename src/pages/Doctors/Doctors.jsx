@@ -10,6 +10,10 @@ import axios from 'axios';
 import PopUp from '../../components/PopUp/PopUp';
 import DoctorsForm from './DoctorsForm';
 import { CiUser } from 'react-icons/ci';
+import { FaEye } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+
 export default function Doctors() {
 
     function handelDelete(row) {
@@ -76,7 +80,7 @@ const {data , isLoading , refetch} = useApi({
         width: 200,
             algin : "center",
         headerAlign : "center",
-        renderCell : ({ row : { show}}) => {
+        renderCell : ({ row : { active}}) => {
             return (
 
                 <Box
@@ -90,7 +94,8 @@ const {data , isLoading , refetch} = useApi({
 
                 }}
               >
-                {show ?  <span className="text-sm px-6 py-2 rounded-lg bg-emerald-600 text-white font-medium ">active</span> :<span className="text-sm px-6 py-2 rounded-lg bg-red-600 font-medium text-white">Freeze</span>}
+                {<span className={` ${active ? "bg-emerald-600" : "bg-red-600"} text-sm px-4 py-2 rounded-lg capitalize  text-white font-medium flex gap-2 items-center`}>  {active ? <FaEye className="text-xl"/> :<FaLock className="text-xl" /> } {active ? "active" : "freeze"} </span>}
+                {/* {active ?  <span className="text-sm px-6 py-2 rounded-lg bg-emerald-600 text-white font-medium "> <FaEye/> active</span> :<span className="text-sm px-6 py-2 rounded-lg bg-red-600 font-medium text-white">Freeze</span>} */}
                 
               </Box>
 
@@ -117,7 +122,9 @@ const {data , isLoading , refetch} = useApi({
 
                 }}
               >
-                {show ?  <span className="text-sm px-6 py-2 rounded-lg bg-cyan-700 text-white font-medium ">Show</span> :<span className="text-sm px-6 py-2 rounded-lg bg-red-400 font-medium text-white">No Show</span>}
+               {<span className={` ${show ? "bg-cyan-600" : "bg-red-400"} text-sm px-4 py-2 rounded-lg capitalize  text-white font-medium flex gap-2 items-center`}>  {show ? <FaEye className="text-xl"/> :<FaEyeSlash  className="text-xl" /> } {show ? "show" : "no show"} </span>}
+
+                {/* {show ?  <span className="text-sm px-6 py-2 rounded-lg bg-cyan-700 text-white font-medium ">Show</span> :<span className="text-sm px-6 py-2 rounded-lg bg-red-400 font-medium text-white">No Show</span>} */}
                 
               </Box>
 
@@ -138,7 +145,7 @@ const {data , isLoading , refetch} = useApi({
         algin : "center",
         headerAlign : "center",
         renderCell: (params) => (
-          params.row.img ?  <img className='w-12 h-12 rounded-full m-auto' src={ "https://www.test.nia.com.eg/alnasr/storage/app/public/"+ params.row.img} alt="" /> : <CiUser className='text-xl m-auto block' />
+          params.row.img ?  <img className='w-12 h-12 rounded-full m-auto' src={ "https://www.test.nia.com.eg/alnasr/storage/app/public/"+ params.row.img} alt="" /> : <div className="flex items-center justify-center w-full h-full"><CiUser className='text-4xl m-auto block' /></div> 
 
            
         )
