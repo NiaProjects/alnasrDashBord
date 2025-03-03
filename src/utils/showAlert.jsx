@@ -29,3 +29,12 @@ MySwal.fire({
       
 }
 
+export function showSuccessAlert(message) {
+  MySwal.fire({
+    title: "Done!",
+    text: message,
+    icon: "success",
+     confirmButtonColor:"#F48120"
+  });
+}
+

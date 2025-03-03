@@ -70,7 +70,7 @@ const {data , isLoading , refetch} = useApi({
 
   if(isLoading) return <div>Loading...</div>
   // console.log(JSON.parse(data.data[data.data.length - 1].exp));
-  const visibleFields = [ "photo", "name_en", "show" , "actions" , "active" , "desc_en" , "phone" ]; 
+  const visibleFields = [ "photo", "name_en", "show" , "actions" , "active" , "title_en" , "phone" ]; 
 
   const columns = Object.keys(data.data[0] || {}).filter((key) => !key.endsWith("ar")).map((key) => {
 

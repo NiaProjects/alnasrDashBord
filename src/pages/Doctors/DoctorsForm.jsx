@@ -5,7 +5,7 @@ import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import { IoCheckmarkSharp, IoCloseSharp } from "react-icons/io5";
 import useApi from "../../hooks/useApi";
-import { showAlert } from "../../utils/showAlert";
+import { showAlert, showSuccessAlert } from "../../utils/showAlert";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -117,12 +117,9 @@ const DoctorsForm = ({ updateForm, refetch }) => {
     formik.resetForm();
     setLoading(false);
 
-    MySwal.fire({
-      title: "Done!",
-      text: "Doctor added successfully",
-      icon: "success",
-       confirmButtonColor:"#F48120"
-    });
+
+    showSuccessAlert("Doctor added successfully");
+
     refetch();
   }
   async function handelUpdate(values) {
@@ -165,12 +162,9 @@ const DoctorsForm = ({ updateForm, refetch }) => {
     console.log(data);
     // formik.resetForm();
     setLoading(false);
-    MySwal.fire({
-      title: "Done!",
-      text: "Doctor updated successfully",
-      icon: "success",
-      confirmButtonColor:"#F48120"
-    });
+
+    showSuccessAlert("Doctor updated successfully");
+
     refetch();
   }
 

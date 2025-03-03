@@ -8,6 +8,7 @@ import Login from './pages/Login/Login'
 import CertificatesForm from './components/CAlert/CAlert'
 import Specialization from './pages/Specialization/Specialization'
 import Doctors from './pages/Doctors/Doctors'
+import Offers from './pages/offers/Offers'
 
 function App() {
   const routes = createHashRouter(   [
@@ -17,6 +18,7 @@ function App() {
       { path: "/", element: <Home/> },
       { path: "/Specialization", element: <Specialization/> },
       { path: "/docs", element: <Doctors/> },
+      { path: "/offers", element: <Offers/> },
     ] 
     }
   ]  )
